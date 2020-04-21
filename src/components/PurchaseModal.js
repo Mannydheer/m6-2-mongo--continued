@@ -82,7 +82,7 @@ const PurchaseModal = () => {
           purchaseTicketRequest();
 
           fetch('/api/book-seat', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
             },
@@ -152,8 +152,8 @@ const PurchaseModal = () => {
             {status === 'awaiting-response' ? (
               <CircularProgress size={24} color='inherit' />
             ) : (
-              'Purchase'
-            )}
+                'Purchase'
+              )}
           </PurchaseButton>
         </Row>
         {error && <Error>{error}</Error>}

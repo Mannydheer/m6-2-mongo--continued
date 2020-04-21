@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export const SeatContext = React.createContext();
 
@@ -40,6 +40,7 @@ function reducer(state, action) {
 export const SeatProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+
   const receiveSeatInfoFromServer = React.useCallback(
     (data) =>
       dispatch({
@@ -57,6 +58,10 @@ export const SeatProvider = ({ children }) => {
       }),
     [dispatch]
   );
+
+  //useEffect that will post all seats to data base on mount.
+
+
 
   return (
     <SeatContext.Provider

@@ -14,12 +14,19 @@ const initialState = {
   headShape: 'football',
   bestFriend: null,
 };
-
+//to fix this...
 function reducer(state, action) {
   if (action.type === 'MAKE_FRIEND') {
-    state.bestFriend = action.gerald.firstName;
-    return state;
+    return {...state;
+        bestFriend: action.gerald.firstName;
+    }
+
   }
+}
+
+in this case, state will be just...
+state = {
+  bestFriend: action.gerald.firstName
 }
 ```
 
@@ -41,6 +48,15 @@ function reducer(state, action) {
     state.burgerToppings.push('ketchup');
     return state;
   }
+}
+// corrected
+function reducer(state, action) {
+  if (action.type === 'ADD_KETCHUP') {
+    state.burgerToppings.push('ketchup');
+    return {...state,
+    burgerToppings: [...state.burgerToppings,'ketchup']
+    
+  }}
 }
 ```
 
@@ -125,6 +141,14 @@ function reducer(state, action) {
     return state;
   }
 }
+function reducer(state, action) {
+  if (action.type === 'MAKE_FRIEND') {
+    state.bestFriend = action.gerald.firstName;
+    return produce (state,draftState => {
+      draftState.bestFriend = action.gerald.firstName
+    })
+  }
+}
 ```
 
 ---
@@ -144,6 +168,13 @@ function reducer(state, action) {
   if (action.type === 'ADD_KETCHUP') {
     state.burgerToppings.push('ketchup');
     return state;
+  }
+}
+function reducer(state, action) {
+  if (action.type === 'ADD_KETCHUP') {
+    return produce(state, draftState => {
+      draftState.burgerToppings.push('ketchup');
+    })
   }
 }
 ```
@@ -173,10 +204,15 @@ const initialState = {
 function reducer(state, action) {
   if (action.type === 'REMOVE_RACER_FROM_TEAM') {
     const { teamId, racerName } = action;
+    // delete state.competitors[teamId].racers[racerName];
+    // return state;
+    return produce (state, draftState => {
+          delete draftState.competitors[teamId].racers[racerName];
 
-    delete state.competitors[teamId].racers[racerName];
+    })
 
-    return state;
+
+
   }
 }
 ```
