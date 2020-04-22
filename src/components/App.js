@@ -9,9 +9,18 @@ import PurchaseModal from './PurchaseModal';
 import { SeatContext } from './SeatContext';
 import { BookingContext } from './BookingContext';
 
+import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import 'tippy.js/dist/tippy.css';
+import Options from './Options';
+import Admin from './Admin';
 
 function App() {
+
+
+
+
+
+
   const {
     actions: { receiveSeatInfoFromServer },
   } = React.useContext(SeatContext);
@@ -26,35 +35,61 @@ function App() {
       .then(receiveSeatInfoFromServer);
   }, [receiveSeatInfoFromServer]);
 
+
+
+
+
+
   return (
     <>
-      <GlobalStyles />
+      <Router>
+        <Options></Options>
 
-      <Centered>
-        <TicketWidget />
-      </Centered>
+        <GlobalStyles />
+        <Switch>
+          {/* -----------------------------ADMIN----------------------- */}
+          <Route exact path='/admin'>
+            <Admin></Admin>
+          </Route>
 
-      <PurchaseModal />
-      <Snackbar open={status === 'purchased'} severity="success">
-        <Alert
-          severity="success"
-          onClose={clearSnackbar}
-          elevation={6}
-          variant="filled"
-        >
-          Successfully purchased ticket! Enjoy the show.
+          {/* -----------------------------HOME----------------------- */}
+
+          <Route exact path='/home'>
+
+            <Centered>
+              <TicketWidget />
+            </Centered>
+
+            <PurchaseModal />
+            <Snackbar open={status === 'purchased'} severity="success">
+              <Alert
+                severity="success"
+                onClose={clearSnackbar}
+                elevation={6}
+                variant="filled"
+              >
+                Successfully purchased ticket! Enjoy the show.
         </Alert>
-      </Snackbar>
+            </Snackbar>
+          </Route>
+        </Switch>
+      </Router>
+
+
+      {/* <div>
+        <form>
+          <input type='text' placeholder='admin'></input>
+          <input type='password' placeholder='password'></input>
+          <button type='onSubmit'>Login</button>
+        </form>
+      </div> */}
     </>
   );
 }
 
 const Centered = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+
+
   z-index: 0;
   display: flex;
   justify-content: center;

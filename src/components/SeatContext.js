@@ -32,6 +32,18 @@ function reducer(state, action) {
         },
       };
     }
+    case 'unMark-seat-as-purchased': {
+      return {
+        ...state,
+        seats: {
+          ...state.seats,
+          [action.seatId]: {
+            ...state.seats[action.seatId],
+            isBooked: false,
+          },
+        },
+      };
+    }
     default:
       throw new Error(`Unrecognized action: ${action.type}`);
   }
@@ -58,6 +70,14 @@ export const SeatProvider = ({ children }) => {
       }),
     [dispatch]
   );
+  const unMarkSeatAsPurchased = React.useCallback(
+    (seatId) =>
+      dispatch({
+        type: 'unMark-seat-as-purchased',
+        seatId,
+      }),
+    [dispatch]
+  );
 
   //useEffect that will post all seats to data base on mount.
 
@@ -70,6 +90,9 @@ export const SeatProvider = ({ children }) => {
         actions: {
           receiveSeatInfoFromServer,
           markSeatAsPurchased,
+          //isBooked will be false.
+          unMarkSeatAsPurchased,
+
         },
       }}
     >
